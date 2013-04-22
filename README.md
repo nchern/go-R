@@ -16,12 +16,12 @@ Known issues
 Getting started
 ====
 
+1. Install https://github.com/stretchrcom/testify testing package.
 1. Install R environment: http://cran.r-project.org/
-2. Check if you have R header files under correct path(check `#cgo CFLAGS:` directive in sources)
-2. Make sure `$R_HOME` is set and pointed to your R location.
+2. Check if you have R header files under correct path(check `#cgo CFLAGS:` directive in sources.
 2. Make sure `libR.so` is avaliable. Set `$LD_LIBRARY_PATH` if R istallation is not system-wide.
-3. Install https://github.com/stretchrcom/testify testing package
-3. Run `go test` under go-R/R directory
+2. Make sure `$R_HOME` is set and pointed to your R location before you run any R-related code.
+3. Run `go test` under go-R/R directory.
 
 Basic usage
 ====
