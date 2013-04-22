@@ -54,12 +54,10 @@ int main(int argc, char **argv) {
     
     SEXP ans, x, y;
 
-    PROTECT(x = allocVector(REALSXP, 3));
-    PROTECT(y = allocVector(REALSXP, 1));
-    for (i = 0; i < 3; i++)
+    PROTECT(x = allocVector(REALSXP, 8));
+    for (i = 0; i < 8; i++)
         REAL(x)[i] = i + 1;
     defineVar(install("x"), x, R_GlobalEnv);
-    defineVar(install("y"), x, R_GlobalEnv);
     char *script[] = {
         //"c<-file(\"R.log\", \"w\")",
         //"sink(file=c, type=\"message\")",
