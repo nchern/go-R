@@ -30,7 +30,8 @@ func NewComplexVector(vector []complex128) *ComplexVector {
 
 	length := len(vector)
 	v := ComplexVector{}
-	v.expr = C.allocVector(C.CPLXSXP, C.R_len_t(length))
+	//v.expr = C.allocVector(C.CPLXSXP, C.R_len_t(length))
+	v.expr = C.allocVector(C.CPLXSXP, C.R_xlen_t(length))
 	v.length = length
 
 	v.CopyFrom(vector)

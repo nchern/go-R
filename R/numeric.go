@@ -22,10 +22,6 @@ double NumericVectorElt(SEXP vec, int i) {
 */
 import "C"
 
-//import (
-//	"fmt"
-//	"log"
-
 func boundsCheck(i int, length int) {
 	if i >= length || i < 0 {
 		panic("Index out of bounds")
@@ -61,7 +57,8 @@ func NewNumericVector(vector []float64) *NumericVector {
 
 	length := len(vector)
 	v := NumericVector{}
-	v.expr = C.allocVector(C.REALSXP, C.R_len_t(length))
+	v.expr = C.allocVector(C.REALSXP, C.R_xlen_t(length))
+	//v.expr = C.allocVector(C.REALSXP, C.R_len_t(length))
 	v.length = length
 
 	v.CopyFrom(vector)
@@ -89,41 +86,4 @@ func (this *NumericVector) CopyFrom(src []float64) {
 	for i := 0; i < this.length; i++ {
 		C.SetNumericVectorElt(this.expr, C.int(i), C.double(src[i]))
 	}
-}
-
-type Result struct {
-	expr C.SEXP
-}
-
-func NewResult(expr C.SEXP) *Result {
-	return &Result{expr: expr}
-}
-
-func (this *Result) IsNumeric() bool {
-	return C.Rf_isReal(this.expr) != 0
-}
-
-func (this *Result) IsComplex() bool {
-	return C.Rf_isComplex(this.expr) != 0
-}
-
-func (this *Result) AsComplex() *ComplexVector {
-	if !this.IsComplex() {
-		panic("Not a complex vector")
-	}
-	v := ComplexVector{}
-	v.length = int(C.Rf_length(this.expr))
-	v.expr = this.expr
-	return &v
-
-}
-
-func (this *Result) AsNumeric() *NumericVector {
-	if !this.IsNumeric() {
-		panic("Not a numeric vector")
-	}
-	v := NumericVector{}
-	v.length = int(C.Rf_length(this.expr))
-	v.expr = this.expr
-	return &v
 }

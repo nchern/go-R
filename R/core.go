@@ -3,9 +3,12 @@ package R
 /*
 
 #cgo LDFLAGS: -lm -lR
-#cgo CFLAGS: -I /usr/share/R/include/
+
+
+#define CSTACK_DEFNS 1
 
 #include <stdlib.h>
+#include <Rinterface.h>
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
@@ -15,8 +18,11 @@ package R
 int initR() {
     char *argv[] = {"REmbeddedMy", "--gui=none", "--silent", "--slave"};
     int argc = sizeof(argv)/sizeof(argv[0]);
+    int result = Rf_initEmbeddedR(argc, argv);
+    R_CStackLimit = (uintptr_t)-1;
+    R_Interactive = (Rboolean)0;
 
-    return Rf_initEmbeddedR(argc, argv);
+    return result;
 }
 
 */
@@ -73,9 +79,11 @@ func Eval(expression string) (*Result, error) {
 
 	cmdRChar := C.mkChar(cmd)
 	protector := Protect(cmdRChar)
+	defer protector.Unprotect()
 
 	cmdSexp := C.allocVector(C.STRSXP, 1)
 	protector.Protect(cmdSexp)
+
 	C.SET_STRING_ELT(cmdSexp, 0, cmdRChar)
 
 	parsedCmd := C.R_ParseVector(cmdSexp, -1, (*C.ParseStatus)(unsafe.Pointer(&status)), C.R_NilValue)
@@ -84,12 +92,11 @@ func Eval(expression string) (*Result, error) {
 	}
 
 	protector.Protect(parsedCmd)
-	defer protector.Unprotect()
 
 	var result C.SEXP
 	/* Loop is needed here as EXPSEXP will be of length > 1 */
 	for i := 0; i < int(C.Rf_length(parsedCmd)); i++ {
-		result = C.eval(C.VECTOR_ELT(parsedCmd, C.int(i)), C.R_GlobalEnv)
+		result = C.Rf_eval(C.VECTOR_ELT(parsedCmd, C.R_xlen_t(i)), C.R_GlobalEnv) //R 3.0
 	}
 	return NewResult(result), nil
 }

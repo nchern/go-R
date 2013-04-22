@@ -1,6 +1,7 @@
 package R
 
 import (
+	//"log"
 	"math"
 	"testing"
 
@@ -8,7 +9,7 @@ import (
 )
 
 func TestEvalBadExpr(t *testing.T) {
-	Init()
+	assert.Equal(t, 1, Init())
 	r, err := Eval("x+")
 	assert.Nil(t, r)
 	assert.Error(t, err)
@@ -36,7 +37,6 @@ func TestEval(t *testing.T) {
 	cpl := r.AsComplex()
 	assert.Equal(t, 1, cpl.Len())
 	assert.Equal(t, complex(0, math.Sqrt(2)), cpl.Get(0))
-
 }
 
 func TestEvalWithVariables(t *testing.T) {
@@ -48,8 +48,7 @@ func TestEvalWithVariables(t *testing.T) {
 
 func TestScriptFFT(t *testing.T) {
 	assert.Equal(t, 1, Init())
-
-	Eval("library(stats)")
+	EvalOrDie("library(stats)")
 
 	data := []float64{1, 2, 3, 4, 5, 6, 7, 8}
 	v := NewNumericVector(data)
@@ -60,4 +59,23 @@ func TestScriptFFT(t *testing.T) {
 	z := r.AsComplex()
 	assert.Equal(t, 8, z.Len())
 	assert.Equal(t, complex(36, 0), z.Get(0))
+}
+
+func TestMkTrend(t *testing.T) {
+	assert.Equal(t, 1, Init())
+
+	Eval("library(stats)")
+	Eval("library(chron)")
+	Eval("library(fume)")
+	data := []float64{1, 2, 3, 4, 5, 6, 7, 8}
+	v := NewNumericVector(data)
+	SetSymbol("a1", v)
+	r, err := Eval("mkTrend(a1)")
+	//r, err := Eval("mkTrend(a1)")
+	assert.True(t, r.IsGenericVector())
+	assert.Nil(t, err)
+
+	//z := r.AsComplex()
+	//assert.Equal(t, 8, z.Len())
+	//assert.Equal(t, complex(36, 0), z.Get(0))
 }
