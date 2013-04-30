@@ -45,6 +45,13 @@ int execScript(int line_count, char *lines[]) {
     return 0;
 }
 
+void lmExample() {
+        execCmd("library(fume)");
+        execCmd("print(mkTrend(c(1,2,3,4,5,6,7,8), 0.95))");
+	    execCmd("print(lm(x ~ I(1:8))$resid)");
+        //execCmd("print(mkTrend(x, 0.95))");
+}
+
 int main(int argc, char **argv) {
     int r = initR();
     printf("Hello R: %d\n", r);
@@ -57,14 +64,16 @@ int main(int argc, char **argv) {
     PROTECT(x = allocVector(REALSXP, 8));
     for (i = 0; i < 8; i++)
         REAL(x)[i] = i + 1;
-    defineVar(install("x"), x, R_GlobalEnv);
-    char *script[] = {
+    SEXP xSym = install("x");
+    SEXP ySym = install("y");
+    defineVar(xSym, x, R_GlobalEnv);
+    PROTECT(xSym);
+    printf("x: %d, y: %d\n", findVar(xSym, R_GlobalEnv) ==  R_UnboundValue, findVar(ySym, R_GlobalEnv) == R_UnboundValue);
+    //char *scridddpt[] = {
         //"c<-file(\"R.log\", \"w\")",
         //"sink(file=c, type=\"message\")",
-        "1+3",
-        "library(fume)",
-        "library(signal)",
-        "print(mkTrend(x, 0.95))",
-    };
-    execScript(4, script);
+        //"1+3",
+    //};
+    //execScript(4, script);
+    UNPROTECT(2);
 }
