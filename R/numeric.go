@@ -29,7 +29,7 @@ func boundsCheck(i int, length int) {
 }
 
 type Expression interface {
-	toSexp() C.SEXP
+	ToSexp() C.SEXP
 }
 
 type expression struct {
@@ -37,7 +37,7 @@ type expression struct {
 	length int
 }
 
-func (this *expression) toSexp() C.SEXP {
+func (this *expression) ToSexp() C.SEXP {
 	return this.expr
 }
 

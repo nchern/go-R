@@ -104,9 +104,9 @@ func Eval(expression string) (*Result, error) {
 func SetSymbol(name string, val Expression) {
 	nameC := C.CString(name)
 	defer C.free(unsafe.Pointer(nameC))
-	C.Rf_protect(val.toSexp())
+	C.Rf_protect(val.ToSexp())
 	defer C.Rf_unprotect(1)
-	C.defineVar(C.install(nameC), val.toSexp(), C.R_GlobalEnv)
+	C.defineVar(C.install(nameC), val.ToSexp(), C.R_GlobalEnv)
 }
 
 func Init() int {
