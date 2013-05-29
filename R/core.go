@@ -94,9 +94,13 @@ func Eval(expression string) (*Result, error) {
 	protector.Protect(parsedCmd)
 
 	var result C.SEXP
+	errorOccured := 0
 	/* Loop is needed here as EXPSEXP will be of length > 1 */
 	for i := 0; i < int(C.Rf_length(parsedCmd)); i++ {
-		result = C.Rf_eval(C.VECTOR_ELT(parsedCmd, C.R_xlen_t(i)), C.R_GlobalEnv) //R 3.0
+		result = C.R_tryEval(C.VECTOR_ELT(parsedCmd, C.R_xlen_t(i)), C.R_GlobalEnv, (*C.int)(unsafe.Pointer(&errorOccured))) //R 3.0
+		if errorOccured != 0 {
+			return nil, fmt.Errorf("R error occured executing: %s", C.GoString(cmd))
+		}
 	}
 	return NewResult(result), nil
 }
