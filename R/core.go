@@ -109,6 +109,12 @@ func SetSymbol(name string, val Expression) {
 	C.defineVar(C.install(nameC), val.ToSexp(), C.R_GlobalEnv)
 }
 
+func VariableExists(name string) bool {
+	nameC := C.CString(name)
+	defer C.free(unsafe.Pointer(nameC))
+	return C.findVar(C.install(nameC), C.R_GlobalEnv) == C.R_UnboundValue
+}
+
 func Init() int {
 	if isInitialized != 0 {
 		return isInitialized
