@@ -126,33 +126,3 @@ func Init() int {
 	isInitialized = int(C.initR())
 	return isInitialized
 }
-
-/*
-func testMem(n int) {
-	data := randVector(50000)
-	v := NewNumericVector(data)
-	for i := 0; i < n; i++ {
-		data = randVector(50000)
-		v.CopyFrom(data)
-		SetSymbol("x", v)
-		res, err := Eval("sum(x)")
-		if err != nil {
-			panic(fmt.Sprintf("Eval error: %s", err))
-		}
-		if i%10 == 0 {
-			fmt.Printf("%d Result: %f\nEnter to continue...\n", i, float64(C.asReal(res.expr)))
-			var s string
-			fmt.Scanf("%s", &s)
-			if s == "q" {
-				return
-			}
-			if s == "gc" {
-				fmt.Printf("Call gc()")
-				_, err = Eval("gc()")
-				if err != nil {
-					panic(fmt.Sprintf("Eval error: %s", err))
-				}
-			}
-		}
-	}
-}*/

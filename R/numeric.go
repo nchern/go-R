@@ -58,7 +58,6 @@ func NewNumericVector(vector []float64) *NumericVector {
 	length := len(vector)
 	v := NumericVector{}
 	v.expr = C.allocVector(C.REALSXP, C.R_xlen_t(length))
-	//v.expr = C.allocVector(C.REALSXP, C.R_len_t(length))
 	v.length = length
 
 	v.CopyFrom(vector)
@@ -86,4 +85,14 @@ func (this *NumericVector) CopyFrom(src []float64) {
 	for i := 0; i < this.length; i++ {
 		C.SetNumericVectorElt(this.expr, C.int(i), C.double(src[i]))
 	}
+}
+
+func (this *NumericVector) ToArray() []float64 {
+	C.Rf_protect(this.expr)
+	defer C.Rf_unprotect(1)
+	array := make([]float64, this.length)
+	for i := 0; i < this.length; i++ {
+		array[i] = float64(C.NumericVectorElt(this.expr, C.int(i)))
+	}
+	return array
 }

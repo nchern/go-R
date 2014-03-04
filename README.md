@@ -11,7 +11,7 @@ Project in the early stage, memory leaks and even SIGFAULTs are possible. Use it
 Known issues
 ===
 
-* Tests are BROKEN with R >= 2.15. Works only in standalone executable. Possible threading issues.
+* Tests not work with R >= 2.15. Works only in standalone executable, see examples. This causes by stack allocation within goroutines as go test run each test in separate goroutine
 
 Getting started
 ====

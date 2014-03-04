@@ -58,7 +58,7 @@ func (this *Result) IsGenericVector() bool {
 
 func (this *Result) AsGenericVector() *Vector {
 	if !this.IsGenericVector() {
-		panic("Not a complex vector")
+		panic("Not a generic vector")
 	}
 	v := Vector{}
 	v.length = int(C.Rf_length(this.expr))

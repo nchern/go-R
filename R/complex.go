@@ -69,3 +69,14 @@ func (this *ComplexVector) CopyFrom(src []complex128) {
 		C.SetComplexVectorElt(this.expr, C.int(i), c)
 	}
 }
+
+func (this *ComplexVector) ToArray() []complex128 {
+	C.Rf_protect(this.expr)
+	defer C.Rf_unprotect(1)
+	array := make([]complex128, this.length)
+	for i := 0; i < this.length; i++ {
+		c := C.ComplexVectorElt(this.expr, C.int(i))
+		array[i] = complex(float64(c.r), float64(c.i))
+	}
+	return array
+}
