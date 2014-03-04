@@ -5,13 +5,14 @@ Go(golang) bindings for R language
 
 This is simple binding to eval R expressions and pass results to/from Go code. 
 
-*WARNING!*
+**WARNING!**
+
 Project in the early stage, memory leaks and even SIGFAULTs are possible. Use it on your own risk.
 
 Known issues
 ===
 
-* Tests not work with R >= 2.15. Works only in standalone executable, see examples. This causes by stack allocation within goroutines as go test run each test in separate goroutine
+* You should call `R.Init()` exactly in main goroutine of the app(i.e. not in goroutine created by your app). This was found by experiments. Possible reason is clashing between process thread stack and goroutine stack. As a result, its impossible to run R-related code in tests as go test run its testing function in custom goroutine per test.
 
 Getting started
 ====
@@ -21,7 +22,7 @@ Getting started
 2. Check if you have R header files under correct path(check `#cgo CFLAGS:` directive in sources.
 2. Make sure `libR.so` is avaliable. Set `$LD_LIBRARY_PATH` if R istallation is not system-wide.
 2. Make sure `$R_HOME` is set and pointed to your R location before you run any R-related code.
-3. Run `go test` under go-R/R directory.
+3. Run `go run main.go` under go-R/example directory.
 
 Basic usage
 ====
