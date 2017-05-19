@@ -2,13 +2,14 @@ package R
 
 /*
 
+#cgo CFLAGS: -I /usr/share/R/include/
 #cgo LDFLAGS: -lm -lR
 
 
 #define CSTACK_DEFNS 1
 
 #include <stdlib.h>
-#include <Rinterface.h>
+#include linux <Rinterface.h>
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>

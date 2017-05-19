@@ -2,8 +2,10 @@ package R
 
 /*
 
-#cgo LDFLAGS: -lm -lR
-#cgo CFLAGS: -I /usr/share/R/include/
+#cgo linux CFLAGS: -I /usr/share/R/include/
+#cgo windows CFLAGS: -I"C:/R/include"
+#cgo linux LDFLAGS: -lm -lR
+#cgo windows LDFLAGS: -L"C:/R/bin/x64" -lm -lR
 
 #include <stdlib.h>
 #include <R.h>
