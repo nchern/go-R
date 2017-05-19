@@ -7,7 +7,6 @@ package R
 #include <stdint.h>
 #include <stdlib.h>
 #define HAVE_UINTPTR_T
-
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
@@ -18,7 +17,6 @@ int initR() {
     char *argv[] = {"REmbeddedMy", "--gui=none", "--silent", "--slave"};
     int argc = sizeof(argv)/sizeof(argv[0]);
     int result = Rf_initEmbeddedR(argc, argv);
-    //R_Interactive = (Rboolean)0;
 
     return result;
 }
