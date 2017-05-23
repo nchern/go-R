@@ -2,10 +2,14 @@ package R
 
 /*
 
-#cgo LDFLAGS: -lm -lR
-#cgo CFLAGS: -I /usr/share/R/include/
+#cgo linux CFLAGS: -DCSTACK_DEFNS=1 -I /usr/share/R/include/
+#cgo windows CFLAGS: -I"C:/R/include"
+#cgo linux LDFLAGS: -lm -lR
+#cgo windows LDFLAGS: -L"C:/R/bin/x64" -lm -lR
 
+#include <stdint.h>
 #include <stdlib.h>
+#define HAVE_UINTPTR_T
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>

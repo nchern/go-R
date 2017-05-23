@@ -2,12 +2,12 @@ package R
 
 /*
 
+#cgo CFLAGS: -DCSTACK_DEFNS=1 -I /usr/share/R/include/
 #cgo LDFLAGS: -lm -lR
 
-
-#define CSTACK_DEFNS 1
-
+#include <stdint.h>
 #include <stdlib.h>
+#define HAVE_UINTPTR_T
 #include <Rinterface.h>
 #include <R.h>
 #include <Rinternals.h>
